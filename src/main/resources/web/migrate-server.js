@@ -5,14 +5,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const goButton = $('#goButton');
     const routerUrl = (qs.get('routerUrl') || '').replace(/\/$/, '');
     const runnerId = qs.get('instanceId');
+    let runner = null;
     const errDiv = $('.error');
     let isRunning = false;
 
     if (routerUrl && runnerId) {
         const runnerUrl = routerUrl + '/api/v1/runners/' + encodeURIComponent(runnerId);
         fetch(runnerUrl)
-            .then(r => r.ok ? r.json() : r.status + ' returned from ' + runnerUrl)
-            .then(r => fetch(r.appsUrl).then(r => r.ok ? r.json() : r.status + ' returned from ' + r.appsUrl))
+            .then(r => {
+                if (r.ok) return r.json();
+                throw r.status + ' returned from ' + runnerUrl;
+            })
+            .then(r => {
+                runner = r;
+                return fetch(r.appsUrl).then(r => r.ok ? r.json() : r.status + ' returned from ' + r.appsUrl);
+            })
             .then(r => {
                 console.log(r);
                 const template = $('#appTemplate');
@@ -54,13 +61,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function migrate(name, appDiv, a$) {
-        appDiv.scrollIntoView({behavior: 'smooth'});
+        appDiv.scrollIntoView({behavior: 'smooth', block: 'start', inline: 'nearest'});
         const params = new URLSearchParams();
         params.append('routerUrl', routerUrl);
         params.append('appName', name);
         params.append('currentRunnerID', runnerId);
         const overflower = a$('.overflower');
-        overflower.classList.remove('success', 'failer');
+        overflower.classList.remove('success', 'failure');
         overflower.classList.add('inProgress');
         return fetch('/app-migrator/api/emigrate', {
             method: 'post',
@@ -92,8 +99,29 @@ document.addEventListener('DOMContentLoaded', () => {
         isRunning = true;
         let curTask = resolvedPromise();
         if ($('input[name="disableNew"]').checked) {
-            // TODO: set maxApps=0 for current runner
-            // curTask = fetch()
+            const div = $('.preStep');
+            const params = new URLSearchParams();
+            params.append('url', runner.url);
+            params.append('maxApps', '0');
+            curTask = curTask.then(_ => fetch(routerUrl + '/api/v1/runners/' + encodeURIComponent(runnerId), {
+                    method: 'put',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: params
+                }).then(r => {
+                    if (r.ok) return r.json();
+                    throw 'Error setting maxApps to 0';
+                }).then(r => {
+                    div.classList.remove('failure');
+                    div.classList.add('success');
+                }).catch(e => {
+                    div.classList.remove('success');
+                    div.classList.add('failure');
+                    throw e;
+                })
+            );
         }
 
         const appDivs = document.querySelectorAll('div.app');

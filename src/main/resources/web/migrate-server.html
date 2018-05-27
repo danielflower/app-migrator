@@ -36,11 +36,15 @@
         }
         .overflower.success .output {
             display: block;
-            background-color: #87cb8c;
             max-height: 100px;
+        }
+        .success {
+            background-color: #87cb8c;
         }
         .overflower.failure .output {
             display: block;
+        }
+        .failure {
             background-color: #cba69f;
         }
 
@@ -54,7 +58,7 @@
 <p>Migrate all apps to other instances</p>
 
 <form id="demiseForm">
-    <fieldset>
+    <fieldset class="preStep">
         <legend>Pre-step</legend>
         <label><input type="checkbox" checked name="disableNew"> Disable new apps being added to instance</label>
     </fieldset>
