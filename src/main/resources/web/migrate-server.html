@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>App Instance Demiser</title>
+    <link rel="stylesheet" href="app.css">
+    <style>
+        .app .output {
+            width: 100%;
+            border: 1px dashed #DDDDDD;
+            overflow-x: auto;
+            overflow-y: scroll;
+            height: auto;
+            max-height: 400px;
+            white-space: pre;
+            margin: 0;
+            padding: 0;
+        }
+
+        .app .overflower {
+            padding: 10px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            max-width: 80vw;
+            width: 80vw;
+            margin: 0 0 0 0;
+        }
+
+        .overflower.notStarted .output {
+            display: none;
+        }
+
+        .overflower.inProgress .output {
+            display: block;
+            max-height: 400px;
+        }
+        .overflower.success .output {
+            display: block;
+            background-color: #87cb8c;
+            max-height: 100px;
+        }
+        .overflower.failure .output {
+            display: block;
+            background-color: #cba69f;
+        }
+
+        .app .appName {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<h1>App Instance Demiser</h1>
+<p>Migrate all apps to other instances</p>
+
+<form id="demiseForm">
+    <fieldset>
+        <legend>Pre-step</legend>
+        <label><input type="checkbox" checked name="disableNew"> Disable new apps being added to instance</label>
+    </fieldset>
+    <fieldset id="appsFieldset">
+        <legend>Apps</legend>
+    </fieldset>
+
+    <fieldset>
+        <legend>Post-step</legend>
+        <label><input type="checkbox" checked name="removeRunner"> Remove runner from the router</label>
+    </fieldset>
+
+    <fieldset id="startSet">
+        <input type="button" id="goButton" disabled value="Start migration">
+    </fieldset>
+</form>
+
+<div class="error"></div>
+
+
+<template id="appTemplate">
+    <div class="app">
+        <label>
+            <input type="checkbox" checked name=""> <span class="appName">App Name</span>
+        </label>
+        <div class="overflower notStarted">
+            <div class="output">Build output</div>
+        </div>
+    </div>
+</template>
+
+</body>
+<script src="migrate-server.js"></script>
+</html>
