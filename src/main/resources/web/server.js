@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('hi');
     const $ = document.querySelector.bind(document);
 
 

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Single App Migration</title>
+    <link rel="stylesheet" href="app.css">
+</head>
+<body>
+<h1>Single App Migration</h1>
+<p>Emigrate a single app runner app (with its data) off of one server onto any other one.</p>
+
+<form action="/app-migrator/api/emigrate" method="post">
+    <fieldset>
+        <legend>Emigrate a single app</legend>
+        <label>App Runner URL:
+            <input name="routerUrl" type="text" required value="https://localhost:8443/" placeholder="https://apprunner.example.org" style="min-width: 50vw">
+        </label>
+        <label>
+            App name:
+            <input name="appName" type="text" required placeholder="sample-app" value="maven">
+        </label>
+        <label>
+            Current runner ID:
+            <input name="currentRunnerID" type="text" required placeholder="runner" value="app-runner-2">
+        </label>
+        <input type="submit" value="Emigrate to another instance">
+    </fieldset>
+
+</form>
+
+</body>
+</html>

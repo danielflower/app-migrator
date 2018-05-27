@@ -9,48 +9,12 @@
 <h1>App Migrator</h1>
 <p>Migrate app-runner apps between servers.</p>
 
-<form action="/app-migrator/api/emigrate" method="post">
-    <fieldset>
-        <legend>Emigrate a single app</legend>
-        <label>App Runner URL:
-            <input name="routerUrl" type="text" required value="https://localhost:8443/" placeholder="https://apprunner.example.org" style="min-width: 50vw">
-        </label>
-        <label>
-            App name:
-            <input name="appName" type="text" required placeholder="sample-app" value="maven">
-        </label>
-        <label>
-            Current runner ID:
-            <input name="currentRunnerID" type="text" required placeholder="runner" value="app-runner-2">
-        </label>
-        <input type="submit" value="Emigrate to another instance">
-    </fieldset>
+<p>What do you want to do?</p>
 
-</form>
-<form class="urlForm">
-    <fieldset>
-        <div class="error"></div>
-        <label>App Runner URL:
-        <input type="text" value="https://localhost:8443/" placeholder="https://apprunner.example.org" name="appRunnerUrl" style="min-width: 50vw">
-        </label>
-        <input type="submit" value="Show instances">
-    </fieldset>
-</form>
-
-<form class="instanceForm">
-
-    <fieldset>
-        <legend>Source server</legend>
-
-    </fieldset>
-
-    <fieldset>
-        <legend>Destination server</legend>
-
-    </fieldset>
-
-</form>
+<ul>
+    <li><a href="single.html">Emigrate a single app off of an existing app runner instance</a></li>
+    <li><a href="server.html">Decommission an app runner instance</a></li>
+</ul>
 
 </body>
-<script src="app.js"></script>
 </html>
